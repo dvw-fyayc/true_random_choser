@@ -27,9 +27,18 @@ public class App {
       }
     }
 
-    String filename = "candidates.txt";
+    int groups = 1;
     if (args.length > 1 && args[1] != null) {
-      filename = args[1];
+      try {
+        groups = Integer.parseInt(args[1]);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    String filename = "candidates.txt";
+    if (args.length > 2 && args[2] != null) {
+      filename = args[2];
     }
     Path path = new File(filename).toPath();
 
@@ -54,30 +63,28 @@ public class App {
 
     System.out.println("--------------------");
     System.out.println();
-    System.out.println("Chosen:");
-    for (int index = 0; index < chose; index++) {
-      try {
-        TimeUnit.SECONDS.sleep(5);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+
+    int loopSize = candidates.size() / groups;
+    for (int group = 1; group <= groups; group++) {
+      System.out.println("Group: " + group);
+
+      int counter = 1;
+      for (int index = (group - 1) * loopSize; index < group * loopSize
+          && index < candidates.size(); index++) {
+        try {
+          TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        System.out.println("\t" + counter + ". " + candidates.get(index));
+        counter++;
       }
-      System.out.println(" * " + candidates.get(index));
-      // printName(candidates.get(index));
+
+      if (group != groups) {
+        System.out.println("--------------------");
+      }
     }
 
-  }
-
-  private static void printName(String name) {
-    System.out.print(" * ");
-    for (int i = 0; i < name.length(); i++) {
-      try {
-        TimeUnit.SECONDS.sleep(2);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      System.out.print(name.charAt(i));
-    }
-    System.out.println();
   }
 
 }
